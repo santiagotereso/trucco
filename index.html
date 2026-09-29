@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TRUCCO · Storyboards</title>
+<style>
+:root{--bg:#0b0b0d;--panel:#131318;--line:#26262e;--ink:#f2f0ed;--dim:#8b8b98;--accent:#e08a3c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:15px/1.55 "Helvetica Neue",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+header.top{padding:48px 40px 28px;border-bottom:1px solid var(--line);
+ display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+h1{margin:0;font-size:34px;letter-spacing:.16em;font-weight:600}
+.lede{margin:8px 0 0;color:var(--dim);max-width:60ch;font-size:14px}
+.counts{color:var(--dim);font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-align:right}
+.counts b{color:var(--accent);font-weight:600}
+nav{padding:18px 40px;border-bottom:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap}
+nav button{background:transparent;border:1px solid var(--line);color:var(--dim);border-radius:999px;
+ padding:7px 16px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;
+ transition:.15s}
+nav button:hover{color:var(--ink);border-color:#3d3d48}
+nav button.on{background:var(--ink);color:#0b0b0d;border-color:var(--ink)}
+main{padding:40px;display:flex;flex-direction:column;gap:56px;max-width:1700px;margin:0 auto}
+.card{border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
+.card.hide{display:none}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:20px;
+ padding:22px 26px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.titles h2{margin:0;font-size:19px;letter-spacing:.13em;font-weight:600}
+.sub{margin:5px 0 0;color:var(--dim);font-size:13px}
+.tag{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding:5px 12px;
+ border-radius:999px;border:1px solid var(--line);color:var(--dim);white-space:nowrap}
+.tag-restaurantes{color:#e08a3c;border-color:#5a3f22}
+.tag-deporte{color:#5fa8e0;border-color:#22415a}
+.tag-perfume{color:#c88fd8;border-color:#4a2e52}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+@media(max-width:1050px){.panels{grid-template-columns:1fr}}
+.panel{margin:0;background:var(--panel);padding:20px}
+.model{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);
+ margin-bottom:12px}
+.shot{display:block;border-radius:7px;overflow:hidden;background:#000;border:1px solid var(--line)}
+.shot img{display:block;width:100%;height:auto}
+.shot.pending{aspect-ratio:16/9;display:grid;place-items:center;color:#4a4a56;
+ font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+ background:repeating-linear-gradient(45deg,#111116 0 11px,#0d0d11 11px 22px)}
+.meta{display:flex;justify-content:space-between;gap:12px;margin-top:11px;
+ font-size:11px;color:var(--dim);letter-spacing:.05em}
+.prompt{border-top:1px solid var(--line)}
+.prompt summary{padding:15px 26px;cursor:pointer;font-size:11px;letter-spacing:.15em;
+ text-transform:uppercase;color:var(--dim);user-select:none}
+.prompt summary:hover{color:var(--ink)}
+.prompt pre{margin:0;padding:0 26px 24px;white-space:pre-wrap;color:#a9a9b6;
+ font:12.5px/1.75 ui-monospace,SFMono-Regular,Menlo,monospace}
+footer{padding:32px 40px 60px;color:#5a5a66;font-size:11.5px;border-top:1px solid var(--line)}
+</style></head><body>
+<header class="top">
+  <div><h1>TRUCCO</h1>
+  <p class="lede">Nueve conceptos de comercial &mdash; storyboard contact sheet de 12 cuadros,
+  grilla 4&times;3, 16:9 a 4K. Cada concepto corrido en los dos motores para comparar.</p></div>
+  <div class="counts">Nano Banana Pro <b>9/9</b><br>Nano Banana 2 <b>9/9</b></div>
+</header>
+<nav>
+  <button class="on" data-f="all">Todos</button>
+  <button data-f="restaurantes">Restaurantes</button>
+  <button data-f="deporte">Deporte</button>
+  <button data-f="perfume">Perfume</button>
+</nav>
+<main>
+  <article class="card" id="01-FUEGO" data-cat="restaurantes">
+    <header class="card-head">
+      <div class="titles"><h2>FUEGO</h2><p class="sub">Cocina como ritual</p></div>
+      <span class="tag tag-restaurantes">Restaurantes</span>
+    </header>
+    <div class="panels"><figure class="panel"><figcaption class="model">Nano Banana Pro</figcaption><a class="shot" href="01-FUEGO/nb-pro.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="01-FUEGO/nb-pro_web.jpg" alt="FUEGO — Cocina como ritual Nano Banana Pro"></a><div class="meta"><span class="engine">Gemini 3 Pro Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.8 MB</span></div></figure><figure class="panel"><figcaption class="model">Nano Banana 2</figcaption><a class="shot" href="01-FUEGO/nb-2.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="01-FUEGO/nb-2_web.jpg" alt="FUEGO — Cocina como ritual Nano Banana 2"></a><div class="meta"><span class="engine">Gemini 3.1 Flash Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.7 MB</span></div></figure></div>
+    <details class="prompt"><summary>Prompt</summary><pre>Create a premium cinematic storyboard contact sheet for a 30-second luxury restaurant commercial, presented as 12 distinct widescreen frames in a clean 4x3 grid. The concept is &quot;fire as ritual.&quot; Show: an empty restaurant before service, a chef entering a dark kitchen, close-up of a hand lighting the stove, blue flame becoming orange, raw ingredients on black stone, knife cutting through red meat, butter melting in a copper pan, flames rising dramatically, intense chef portrait through smoke, elegant plating with tweezers, waiter carrying the finished dish through a sophisticated dining room, final hero shot of the dish arriving at an intimate table. Dark amber atmosphere, deep shadows, glowing firelight, black wood, aged brass, cinematic smoke, sensual macro photography, controlled handheld energy, anamorphic lenses, shallow depth of field, premium global restaurant campaign, highly realistic, refined color grading. Maintain the same chef, kitchen and visual identity throughout every frame. No text, no logos, no repeated shots, no comic-book style.</pre></details>
+  </article>
+  <article class="card" id="02-MUNDO" data-cat="restaurantes">
+    <header class="card-head">
+      <div class="titles"><h2>MUNDO</h2><p class="sub">Un universo dentro del plato</p></div>
+      <span class="tag tag-restaurantes">Restaurantes</span>
+    </header>
+    <div class="panels"><figure class="panel"><figcaption class="model">Nano Banana Pro</figcaption><a class="shot" href="02-MUNDO/nb-pro.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="02-MUNDO/nb-pro_web.jpg" alt="MUNDO — Un universo dentro del plato Nano Banana Pro"></a><div class="meta"><span class="engine">Gemini 3 Pro Image</span><span class="size">5504×3072 · 16:9 · 4K · 9.5 MB</span></div></figure><figure class="panel"><figcaption class="model">Nano Banana 2</figcaption><a class="shot" href="02-MUNDO/nb-2.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="02-MUNDO/nb-2_web.jpg" alt="MUNDO — Un universo dentro del plato Nano Banana 2"></a><div class="meta"><span class="engine">Gemini 3.1 Flash Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.9 MB</span></div></figure></div>
+    <details class="prompt"><summary>Prompt</summary><pre>Create a surreal high-end storyboard contact sheet for a 30-second fine-dining commercial, composed of 12 cinematic widescreen frames in a precise 4x3 grid. The central idea is &quot;an entire world hidden inside a dish.&quot; Begin with an extreme macro of a drop of sauce, then travel inside it as if entering another universe: salt crystals become mountains, olive oil becomes a golden ocean, herbs move like a forest in the wind, steam becomes clouds, a red pepper landscape glows at sunset, liquid pours like a waterfall, a chef walks through this imagined culinary world, ingredients orbit in elegant slow motion, the fantasy collapses back into the plate, final garnishing touches, a diner discovers the dish, and an iconic overhead hero shot closes the film. Sophisticated magical realism, tactile ingredients, rich natural colors, photorealistic food, macro probe-lens cinematography, seamless transitions, elegant and mysterious rather than whimsical. Consistent plate, ingredients and art direction. No typography, no logos, no childish fantasy.</pre></details>
+  </article>
+  <article class="card" id="03-ATMOSFERA" data-cat="restaurantes">
+    <header class="card-head">
+      <div class="titles"><h2>ATMÓSFERA</h2><p class="sub">La noche empieza acá</p></div>
+      <span class="tag tag-restaurantes">Restaurantes</span>
+    </header>
+    <div class="panels"><figure class="panel"><figcaption class="model">Nano Banana Pro</figcaption><a class="shot" href="03-ATMOSFERA/nb-pro.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="03-ATMOSFERA/nb-pro_web.jpg" alt="ATMÓSFERA — La noche empieza acá Nano Banana Pro"></a><div class="meta"><span class="engine">Gemini 3 Pro Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.9 MB</span></div></figure><figure class="panel"><figcaption class="model">Nano Banana 2</figcaption><a class="shot" href="03-ATMOSFERA/nb-2.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="03-ATMOSFERA/nb-2_web.jpg" alt="ATMÓSFERA — La noche empieza acá Nano Banana 2"></a><div class="meta"><span class="engine">Gemini 3.1 Flash Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.9 MB</span></div></figure></div>
+    <details class="prompt"><summary>Prompt</summary><pre>Generate a luxury cinematic storyboard contact sheet for a 30-second restaurant commercial, showing 12 separate 16:9 shots in a clean 4x3 grid. The concept is &quot;the restaurant as the beginning of the night.&quot; Show: a rain-slicked city at dusk, the restaurant glowing behind dark glass, a stylish woman arriving alone, close-up of her hand opening the heavy door, warm light surrounding her, bartender carving clear ice, cocktail poured in slow motion, elegant strangers exchanging glances, plates moving through the room like choreography, reflections in mirrors and polished metal, an intimate conversation seen from a distance, the dining room becoming vibrant and alive, and a final exterior shot late at night with the restaurant glowing like a secret world. Fashion-film sophistication, upscale contemporary interior, warm tungsten against deep blue night, seductive reflections, controlled camera movement, 35mm film texture, subtle grain, authentic human moments, premium hospitality campaign. Same woman, wardrobe and location in all frames. No text or logos.</pre></details>
+  </article>
+  <article class="card" id="04-ENERGIA" data-cat="deporte">
+    <header class="card-head">
+      <div class="titles"><h2>ENERGÍA</h2><p class="sub">El instante antes de explotar</p></div>
+      <span class="tag tag-deporte">Deporte</span>
+    </header>
+    <div class="panels"><figure class="panel"><figcaption class="model">Nano Banana Pro</figcaption><a class="shot" href="04-ENERGIA/nb-pro.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="04-ENERGIA/nb-pro_web.jpg" alt="ENERGÍA — El instante antes de explotar Nano Banana Pro"></a><div class="meta"><span class="engine">Gemini 3 Pro Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.5 MB</span></div></figure><figure class="panel"><figcaption class="model">Nano Banana 2</figcaption><a class="shot" href="04-ENERGIA/nb-2.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="04-ENERGIA/nb-2_web.jpg" alt="ENERGÍA — El instante antes de explotar Nano Banana 2"></a><div class="meta"><span class="engine">Gemini 3.1 Flash Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.7 MB</span></div></figure></div>
+    <details class="prompt"><summary>Prompt</summary><pre>Create an intense high-end storyboard contact sheet for a 30-second sports campaign, presented as 12 cinematic widescreen frames in a 4x3 grid. Follow one elite female sprinter through the seconds before and during a race: empty stadium before sunrise, athlete entering the tunnel, close-up of spikes touching concrete, hands tightening laces, muscles activating during warm-up, breath visible in cold air, fingers settling onto the starting line, extreme close-up of focused eyes, explosive start from the blocks, lateral tracking shot at maximum speed, abstract motion blur and flying track particles, final portrait after crossing the finish line-exhausted, powerful and calm. Visual language focused on compressed energy becoming movement. Deep blacks, metallic blues, sharp sunrise highlights, sweat, skin texture, low camera angles, macro details, high-speed photography, anamorphic flares, dynamic motion blur, premium international sportswear commercial. Maintain the same athlete, outfit and stadium across every shot. No text, logos, crowds or duplicated compositions.</pre></details>
+  </article>
+  <article class="card" id="05-MOVIMIENTO" data-cat="deporte">
+    <header class="card-head">
+      <div class="titles"><h2>MOVIMIENTO</h2><p class="sub">La ciudad es el circuito</p></div>
+      <span class="tag tag-deporte">Deporte</span>
+    </header>
+    <div class="panels"><figure class="panel"><figcaption class="model">Nano Banana Pro</figcaption><a class="shot" href="05-MOVIMIENTO/nb-pro.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="05-MOVIMIENTO/nb-pro_web.jpg" alt="MOVIMIENTO — La ciudad es el circuito Nano Banana Pro"></a><div class="meta"><span class="engine">Gemini 3 Pro Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.1 MB</span></div></figure><figure class="panel"><figcaption class="model">Nano Banana 2</figcaption><a class="shot" href="05-MOVIMIENTO/nb-2.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="05-MOVIMIENTO/nb-2_web.jpg" alt="MOVIMIENTO — La ciudad es el circuito Nano Banana 2"></a><div class="meta"><span class="engine">Gemini 3.1 Flash Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.9 MB</span></div></figure></div>
+    <details class="prompt"><summary>Prompt</summary><pre>Generate a premium 30-second urban sports-film storyboard as a contact sheet of 12 distinct 16:9 frames arranged in a clean 4x3 grid. Follow the same male runner moving through a brutalist city at dawn. Sequence: tying shoes in a concrete apartment, stepping into an empty street, accelerating beneath an overpass, feet striking wet asphalt, profile reflected in glass architecture, racing beside a moving train, climbing monumental concrete stairs, leaping across a puddle, turning sharply through a narrow alley, drone view revealing his path through the city, final sprint toward bright morning light, and a quiet closing portrait on a rooftop overlooking the skyline. Treat architecture, shadows and traffic lights as part of the choreography. Cool gray city palette with controlled red accents, hard directional light, kinetic tracking shots, whip-pan energy, wide lenses mixed with extreme close-ups, realistic sweat and physical effort, sophisticated sports-fashion campaign. Same runner and clothing throughout. No typography, brand logos or superhero imagery.</pre></details>
+  </article>
+  <article class="card" id="06-PERFORMANCE" data-cat="deporte">
+    <header class="card-head">
+      <div class="titles"><h2>PERFORMANCE</h2><p class="sub">Precisión bajo presión</p></div>
+      <span class="tag tag-deporte">Deporte</span>
+    </header>
+    <div class="panels"><figure class="panel"><figcaption class="model">Nano Banana Pro</figcaption><a class="shot" href="06-PERFORMANCE/nb-pro.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="06-PERFORMANCE/nb-pro_web.jpg" alt="PERFORMANCE — Precisión bajo presión Nano Banana Pro"></a><div class="meta"><span class="engine">Gemini 3 Pro Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.2 MB</span></div></figure><figure class="panel"><figcaption class="model">Nano Banana 2</figcaption><a class="shot" href="06-PERFORMANCE/nb-2.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="06-PERFORMANCE/nb-2_web.jpg" alt="PERFORMANCE — Precisión bajo presión Nano Banana 2"></a><div class="meta"><span class="engine">Gemini 3.1 Flash Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.1 MB</span></div></figure></div>
+    <details class="prompt"><summary>Prompt</summary><pre>Create a sophisticated cinematic storyboard contact sheet for a 30-second performance commercial, using 12 separate widescreen frames in a precise 4x3 grid. Feature one elite boxer training alone in a minimalist black gym. Show: a single overhead light switching on, hands being wrapped with precision, close-up of jaw and controlled breathing, gloves hitting together, shadowboxing in darkness, footwork seen from floor level, punch landing on a heavy bag with particles exploding, sweat suspended in ultra-slow motion, rapid combinations captured through elegant motion trails, the athlete stopping in absolute silence, direct intense portrait, and a final wide shot of the boxer alone beneath the light. The idea is not violence but discipline, repetition and complete control. Monochromatic charcoal palette, warm skin tones, sculptural lighting, deep negative space, 35mm texture, crisp macro photography, high-speed camera, refined editorial composition, premium luxury sports campaign. Maintain identical boxer, gloves, wardrobe and environment in every frame. No text, logos, audience or fight opponent.</pre></details>
+  </article>
+  <article class="card" id="07-EROTISMO" data-cat="perfume">
+    <header class="card-head">
+      <div class="titles"><h2>EROTISMO</h2><p class="sub">Piel, vidrio y deseo</p></div>
+      <span class="tag tag-perfume">Perfume</span>
+    </header>
+    <div class="panels"><figure class="panel"><figcaption class="model">Nano Banana Pro</figcaption><a class="shot" href="07-EROTISMO/nb-pro.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="07-EROTISMO/nb-pro_web.jpg" alt="EROTISMO — Piel, vidrio y deseo Nano Banana Pro"></a><div class="meta"><span class="engine">Gemini 3 Pro Image</span><span class="size">5504×3072 · 16:9 · 4K · 7.9 MB</span></div></figure><figure class="panel"><figcaption class="model">Nano Banana 2</figcaption><a class="shot" href="07-EROTISMO/nb-2.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="07-EROTISMO/nb-2_web.jpg" alt="EROTISMO — Piel, vidrio y deseo Nano Banana 2"></a><div class="meta"><span class="engine">Gemini 3.1 Flash Image</span><span class="size">5504×3072 · 16:9 · 4K · 7.8 MB</span></div></figure></div>
+    <details class="prompt"><summary>Prompt</summary><pre>Create a sensual luxury storyboard contact sheet for a 30-second fragrance commercial, composed of 12 cinematic 16:9 shots in a clean 4x3 grid. Feature one elegant woman and an unbranded sculptural glass perfume bottle. Sequence: sheer curtains moving in warm night air, macro of bare shoulder and reflected light, fingers tracing condensation on glass, perfume bottle emerging from shadow, liquid moving inside the bottle, close-up of fragrance applied to the neck, a man&#x27;s silhouette appearing only through a mirror, fabric sliding across skin, the woman walking through a dark luxurious apartment, fragmented reflections suggesting intimacy, the bottle placed on black marble, final iconic hero shot surrounded by soft amber light and shadow. Erotic through suggestion, never explicit. Champagne, black and warm skin palette, tactile close-ups, shallow depth of field, soft diffusion, elegant film grain, slow camera movement, French luxury advertising, sophisticated and mysterious. Maintain the same woman, wardrobe, bottle and apartment throughout. No text, logos, nudity or cheap glamour.</pre></details>
+  </article>
+  <article class="card" id="08-ELEGANCIA" data-cat="perfume">
+    <header class="card-head">
+      <div class="titles"><h2>ELEGANCIA</h2><p class="sub">Arquitectura líquida</p></div>
+      <span class="tag tag-perfume">Perfume</span>
+    </header>
+    <div class="panels"><figure class="panel"><figcaption class="model">Nano Banana Pro</figcaption><a class="shot" href="08-ELEGANCIA/nb-pro.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="08-ELEGANCIA/nb-pro_web.jpg" alt="ELEGANCIA — Arquitectura líquida Nano Banana Pro"></a><div class="meta"><span class="engine">Gemini 3 Pro Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.6 MB</span></div></figure><figure class="panel"><figcaption class="model">Nano Banana 2</figcaption><a class="shot" href="08-ELEGANCIA/nb-2.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="08-ELEGANCIA/nb-2_web.jpg" alt="ELEGANCIA — Arquitectura líquida Nano Banana 2"></a><div class="meta"><span class="engine">Gemini 3.1 Flash Image</span><span class="size">5504×3072 · 16:9 · 4K · 7.8 MB</span></div></figure></div>
+    <details class="prompt"><summary>Prompt</summary><pre>Generate an avant-garde luxury perfume storyboard contact sheet containing 12 distinct widescreen frames in a precise 4x3 grid. The fragrance bottle is treated as a piece of monumental architecture. Show: bottle silhouette in total darkness, a blade of light revealing its edge, extreme macro of thick glass, silver liquid forming geometric waves, the bottle standing inside a vast reflective hall, translucent walls rising around it, a model in sculptural black couture walking through the architecture, mirrored corridors multiplying her silhouette, liquid floating weightlessly, glass and fabric moving in synchronized slow motion, the architectural world collapsing into the bottle, and a pristine final product hero shot. Minimalist black, silver and crystal palette, immaculate reflections, hard directional lighting, controlled symmetry, surreal scale, highly realistic materials, premium fashion-film cinematography, elegant rather than futuristic, museum-level art direction. Keep the same bottle and model consistent in all frames. No typography, logos, decorative flowers or generic beauty-ad imagery.</pre></details>
+  </article>
+  <article class="card" id="09-NATURALEZA-OSCURA" data-cat="perfume">
+    <header class="card-head">
+      <div class="titles"><h2>NATURALEZA OSCURA</h2><p class="sub">Una flor imposible</p></div>
+      <span class="tag tag-perfume">Perfume</span>
+    </header>
+    <div class="panels"><figure class="panel"><figcaption class="model">Nano Banana Pro</figcaption><a class="shot" href="09-NATURALEZA-OSCURA/nb-pro.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="09-NATURALEZA-OSCURA/nb-pro_web.jpg" alt="NATURALEZA OSCURA — Una flor imposible Nano Banana Pro"></a><div class="meta"><span class="engine">Gemini 3 Pro Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.2 MB</span></div></figure><figure class="panel"><figcaption class="model">Nano Banana 2</figcaption><a class="shot" href="09-NATURALEZA-OSCURA/nb-2.jpg" target="_blank" title="Abrir el 4K original"><img loading="lazy" src="09-NATURALEZA-OSCURA/nb-2_web.jpg" alt="NATURALEZA OSCURA — Una flor imposible Nano Banana 2"></a><div class="meta"><span class="engine">Gemini 3.1 Flash Image</span><span class="size">5504×3072 · 16:9 · 4K · 8.5 MB</span></div></figure></div>
+    <details class="prompt"><summary>Prompt</summary><pre>Create a darkly romantic high-end storyboard contact sheet for a 30-second fragrance commercial, arranged as 12 cinematic widescreen frames in a clean 4x3 grid. The concept is &quot;a flower that only blooms at midnight.&quot; Show: a moonlit black landscape, a woman in a deep burgundy silk dress walking through tall grass, macro of a closed dark-red flower, dew moving across its petals, perfume bottle half-buried in wet earth, roots growing toward the glass, the flower opening in extreme slow motion, crimson pollen floating around the woman, her face briefly illuminated by moonlight, the landscape transforming into an elegant abstract garden, the flower reflected inside the bottle, and a final hero composition with bottle, petals and black water. Sensual gothic elegance without horror, obsidian black, oxblood red, silver moonlight, realistic botanical texture, atmospheric fog, macro photography, slow dreamlike movement, premium niche-fragrance campaign, refined cinematic color grading. Maintain the same woman, dress, flower and bottle throughout. No text, logos, fantasy creatures or excessive visual clutter.</pre></details>
+  </article></main>
+<footer>Generado desde la Refiner&iacute;a &middot; Lab &middot; sesi&oacute;n b49779b2 &middot;
+ click en cualquier imagen para abrirla a resoluci&oacute;n completa</footer>
+<script>
+document.querySelectorAll('nav button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on');
+    var f = b.dataset.f;
+    document.querySelectorAll('.card').forEach(function(c){
+      c.classList.toggle('hide', f !== 'all' && c.dataset.cat !== f);
+    });
+  });
+});
+</script>
+</body></html>

@@ -1,0 +1,485 @@
+<meta charset="utf-8">
+<title>Calendario TRUCCO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F3F4F7; --surface:#FFFFFF; --ink:#14161B; --muted:#5D6371; --line:#DDE0E7; --line-soft:#ECEEF2;
+  --s:#5B34D6; --f:#DB6214; --on-bar:#FFFFFF; --today:#D0283F; --hol:#F6E4E6; --done:#9BA1AD; --hito:#178A5A; --we:#ECEEF2;
+  --lw:250px; --cw:32px; --rh:40px;
+  --display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#101217; --surface:#171A21; --ink:#ECEEF3; --muted:#9AA0AD; --line:#2A2F3B; --line-soft:#1F232C;
+    --s:#8D6BFF; --f:#FF8B3D; --on-bar:#101217; --today:#FF5C73; --hol:#2B1C22; --done:#5B606C; --hito:#3CCB8B; --we:#12151B;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#101217; --surface:#171A21; --ink:#ECEEF3; --muted:#9AA0AD; --line:#2A2F3B; --line-soft:#1F232C;
+  --s:#8D6BFF; --f:#FF8B3D; --on-bar:#101217; --today:#FF5C73; --hol:#2B1C22; --done:#5B606C; --hito:#3CCB8B; --we:#12151B;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--display); font-size:14px; line-height:1.45}
+.wrap{max-width:none; margin:0; padding-inline:24px; padding-block:32px 64px; display:flex; flex-direction:column; gap:32px}
+h1,h2,h3{margin:0; text-wrap:balance}
+h1{font-size:clamp(34px,6vw,60px); font-weight:800; font-stretch:72%; letter-spacing:-.01em; line-height:.95; text-transform:uppercase}
+h2{font-size:20px; font-weight:750; font-stretch:80%; text-transform:uppercase; letter-spacing:.01em}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+header{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:20px}
+header .intro{display:flex; flex-direction:column; gap:10px}
+.people{display:flex; gap:10px; flex-wrap:wrap}
+.person{display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:8px 12px}
+.person b{display:block; font-size:14px}
+.person span{font-size:12px; color:var(--muted)}
+.sw{width:14px; height:14px; border-radius:3px; flex:none; display:inline-block}
+.sw.S{background:var(--s)} .sw.F{background:var(--f)}
+.sw.SF{background:repeating-linear-gradient(135deg,var(--s) 0 4px,var(--f) 4px 8px)}
+.sw.kf{background:color-mix(in srgb,var(--f) 22%,var(--surface)); border:1.5px solid var(--f)}
+.sw.par{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--muted) 45%,transparent) 0 3px,transparent 3px 6px); border:1.5px dashed var(--muted)}
+
+/* fechas clave */
+.milestones{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:8px; overflow:hidden}
+.milestones div{background:var(--surface); padding:12px 16px; display:flex; flex-direction:column; gap:2px}
+.milestones .d{font-family:var(--mono); font-size:13px; font-variant-numeric:tabular-nums; color:var(--muted)}
+.milestones .t{font-weight:700; font-stretch:85%; font-size:16px; line-height:1.15}
+
+/* controles */
+.bar-top{display:flex; flex-wrap:wrap; gap:14px 24px; align-items:center; justify-content:space-between}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:6px; overflow:hidden; background:var(--surface)}
+.seg button{font:inherit; font-size:13px; font-weight:600; border:0; background:transparent; color:var(--ink); padding:8px 14px; cursor:pointer; display:flex; align-items:center; gap:8px}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.seg button:focus-visible{outline:2px solid var(--s); outline-offset:-2px}
+.legend{display:flex; flex-wrap:wrap; gap:8px 18px; font-size:12px; color:var(--muted)}
+.legend span{display:flex; align-items:center; gap:7px}
+.legend .tl{width:2px; height:14px; background:var(--today)}
+.legend .hl{width:12px; height:14px; background:var(--hol); border:1px solid var(--line)}
+
+/* gantt */
+.scroll{overflow-x:auto; border:1px solid var(--line); border-radius:8px; background:var(--surface)}
+.gantt{position:relative; width:max-content}
+.row{display:flex; min-height:var(--rh); border-bottom:1px solid var(--line-soft)}
+.lab{position:sticky; left:0; z-index:3; width:var(--lw); flex:none; background:var(--surface); border-right:1px solid var(--line); padding:5px 12px; display:flex; align-items:center; gap:10px}
+.lab .nm{font-size:13px; line-height:1.2; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; flex:1}
+.lab .own{font-family:var(--mono); font-size:10.5px; font-weight:500; padding:2px 6px; border-radius:3px; flex:none; color:var(--on-bar)}
+.own.S{background:var(--s)} .own.F{background:var(--f)}
+.own.SF{background:repeating-linear-gradient(135deg,var(--s) 0 5px,var(--f) 5px 10px)}
+.trk{position:relative; flex:none; width:calc(var(--n) * var(--cw));
+  background-image:linear-gradient(to right, var(--line) 1px, transparent 1px);
+  background-size:calc(var(--cw) * 7) 100%}
+.sec{background:var(--bg); min-height:32px; border-bottom:1px solid var(--line)}
+.sec .lab{background:var(--bg); font-weight:750; font-stretch:82%; text-transform:uppercase; letter-spacing:.03em; font-size:13px}
+.sec .trk{background:none}
+.head{border-bottom:1px solid var(--line)}
+.head .lab{font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; align-items:flex-end}
+.head .trk{height:52px; background:none}
+.mo{position:absolute; top:0; height:26px; border-left:1px solid var(--line); padding:5px 8px; font-size:12px; font-weight:750; font-stretch:82%; text-transform:uppercase; letter-spacing:.04em; white-space:nowrap}
+.dy{position:absolute; top:28px; width:var(--cw); text-align:center; font-family:var(--mono); font-size:10px; color:var(--muted); line-height:1.1; font-variant-numeric:tabular-nums}
+.dy.we{opacity:.55}
+.dy.today{color:var(--today); font-weight:500}
+.b{position:absolute; top:9px; height:22px; border-radius:4px; z-index:1; display:flex; align-items:center; padding-inline:7px; overflow:hidden;
+   font-family:var(--mono); font-size:10.5px; white-space:nowrap; color:var(--on-bar); background:var(--c)}
+.b.S{--c:var(--s)} .b.F{--c:var(--f)}
+.b.SF{background:repeating-linear-gradient(135deg,var(--s) 0 7px,var(--f) 7px 14px); color:#fff; text-shadow:0 0 3px rgba(0,0,0,.6)}
+.b.kf{background:color-mix(in srgb,var(--c) 22%,var(--surface)); border:1.5px solid var(--c); color:var(--ink)}
+.b.par{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--c) 28%,transparent) 0 4px,transparent 4px 8px); border:1.5px dashed var(--c); color:var(--ink)}
+.b.SF.par{--c:var(--muted)}
+.b.done{background:var(--done); border-color:var(--done); color:var(--on-bar)}
+.ov{position:absolute; top:0; bottom:0; pointer-events:none; z-index:0}
+.ov.we{background:var(--we)}
+.ov.hol{background:var(--hol)}
+.ov.now{width:2px; background:var(--today); z-index:2}
+.row[hidden]{display:none}
+
+/* próximas semanas */
+.weeks{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:18px 20px; display:flex; flex-direction:column; gap:14px}
+.card h3{font-size:18px; font-weight:750; font-stretch:82%; text-transform:uppercase; display:flex; align-items:center; gap:10px}
+.card h4{margin:0; font-family:var(--mono); font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.07em; color:var(--muted)}
+.card ul{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:6px}
+.card li{display:flex; gap:10px; align-items:baseline; font-size:13.5px}
+.card li .dt{font-family:var(--mono); font-size:11px; color:var(--muted); flex:none; min-width:96px; font-variant-numeric:tabular-nums}
+.card li.empty{color:var(--muted)}
+.card .grp{display:flex; flex-direction:column; gap:8px}
+section{display:flex; flex-direction:column; gap:14px}
+
+/* detalle */
+details{background:var(--surface); border:1px solid var(--line); border-radius:8px}
+summary{cursor:pointer; padding:14px 18px; font-weight:700; font-stretch:85%; font-size:15px; text-transform:uppercase; letter-spacing:.02em}
+summary:focus-visible{outline:2px solid var(--s); outline-offset:2px}
+.detail{padding:0 18px 18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px 28px}
+.detail dl{margin:0; display:flex; flex-direction:column; gap:8px}
+.detail dt{font-weight:700; font-size:13.5px}
+.detail dd{margin:0; color:var(--muted); font-size:13px; max-width:60ch}
+
+
+/* eventos: mini calendario que abre Google Calendar */
+.ev{display:inline-flex; flex-direction:column; width:20px; height:22px; border:1.5px solid var(--evc); border-radius:3px; background:var(--surface); overflow:hidden; text-decoration:none; color:var(--ink); flex:none; transition:transform .12s}
+.ev i{display:block; height:5px; background:var(--evc); flex:none}
+.ev b{font-family:var(--mono); font-size:10px; font-weight:500; line-height:13px; text-align:center}
+.ev.reu{--evc:var(--ink)} .ev.ini{--evc:var(--f)} .ev.hito{--evc:var(--hito)}
+.ev:hover{transform:translateY(-2px)}
+.ev:focus-visible{outline:2px solid var(--s); outline-offset:2px}
+.trk .ev{position:absolute; top:8px; z-index:2}
+.agenda{background:var(--surface); border:1px solid var(--line); border-radius:8px; overflow:hidden}
+.ag{display:grid; grid-template-columns:auto 118px 1fr auto; gap:6px 14px; align-items:center; padding:10px 16px; border-bottom:1px solid var(--line-soft)}
+.ag:last-child{border-bottom:0}
+.ag .when{font-family:var(--mono); font-size:12px; font-variant-numeric:tabular-nums; color:var(--muted)}
+.ag .what b{display:block; font-size:14px; font-weight:650}
+.ag .what span{display:block; font-size:12.5px; color:var(--muted)}
+.ag .add{font-size:12px; font-weight:600; color:var(--ink); border:1px solid var(--line); border-radius:5px; padding:5px 10px; text-decoration:none; white-space:nowrap}
+.ag .add:hover{border-color:var(--ink)}
+.ag .add:focus-visible{outline:2px solid var(--s); outline-offset:2px}
+.ag.past{opacity:.5}
+.card li .ev{align-self:center}
+.hint{font-size:12px; color:var(--muted); margin:0}
+@media (max-width:640px){
+  .ag{grid-template-columns:auto 1fr}
+  .ag .what{grid-column:2}
+  .ag .add{grid-column:2; justify-self:start}
+}
+@media (max-width:640px){
+  :root{--lw:150px; --cw:22px}
+  .wrap{padding-inline:16px}
+  .lab{padding:5px 8px; gap:6px}
+  .lab .nm{font-size:12px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="intro">
+      <span class="eyebrow">TRUCCO · 2026</span>
+      <h1>Calendario TRUCCO</h1>
+    </div>
+  </header>
+
+  <section>
+    <div class="bar-top">
+      <div class="seg" role="group" aria-label="Filtrar por persona">
+        <button type="button" id="f-all" data-f="all" aria-pressed="true">Los dos</button>
+        <button type="button" id="f-f" data-f="F"><i class="sw F"></i>Federico</button>
+        <button type="button" id="f-s" data-f="S"><i class="sw S"></i>Santiago</button>
+      </div>
+      <div class="legend">
+        <span><i class="sw kf"></i>Keyframes</span>
+        <span><i class="sw SF"></i>Animación y tareas de los dos</span>
+        <span><i class="sw S"></i>Santiago</span>
+        <span><i class="sw F"></i>Federico</span>
+        <span><i class="sw par"></i>En paralelo</span>
+        <span><i class="ev reu" aria-hidden="true"><i></i><b>&middot;</b></i>Reunión</span>
+        <span><i class="tl"></i>Hoy</span>
+        <span><i class="hl"></i>Feriado</span>
+        <span><i class="hl" style="background:var(--we)"></i>Fin de semana</span>
+      </div>
+    </div>
+    <div class="scroll" id="scroll"><div class="gantt" id="gantt"></div></div>
+  </section>
+
+  <section>
+    <h2>Lo que viene</h2>
+    <div class="weeks" id="weeks"></div>
+  </section>
+
+  <div class="milestones" id="milestones"></div>
+
+  <section>
+    <h2>Agenda</h2>
+    <p class="hint">Lunes y jueves a las 18:30. Lunes: brief de keyframes y arranque de animación. Jueves: review de los dos. Cada una se agrega a Google Calendar con Federico ya como invitado: al guardar, Google ofrece mandarle la invitación.</p>
+    <div class="agenda" id="agenda"></div>
+  </section>
+
+  <details>
+    <summary>Qué es cada cosa</summary>
+    <div class="detail" id="detail"></div>
+  </details>
+</div>
+
+<script>
+(function(){
+  // Cada fila puede tener varias barras. k: "kf" keyframes, "an" animación, "par" en paralelo.
+  var DATA = [
+    {sec:"Proyectos", items:[
+      {n:"A · Videoclip", o:"SF", bars:[{s:"2026-09-21",e:"2026-09-25",k:"kf",o:"F",done:true},{s:"2026-09-28",e:"2026-10-02",k:"an"}]},
+      {n:"B · Vinos", o:"SF", bars:[{s:"2026-09-29",e:"2026-10-01",k:"kf",o:"F"},{s:"2026-10-05",e:"2026-10-09",k:"an"}]},
+      {n:"C · Deportes", o:"SF", bars:[{s:"2026-10-06",e:"2026-10-08",k:"kf",o:"F"},{s:"2026-10-12",e:"2026-10-16",k:"an"}]},
+      {n:"D · Fashion Week", o:"SF", bars:[{s:"2026-10-13",e:"2026-10-15",k:"kf",o:"F"},{s:"2026-10-19",e:"2026-10-23",k:"an"}]},
+      {n:"E · Arquitectura", o:"SF", bars:[{s:"2026-10-20",e:"2026-10-22",k:"kf",o:"F"},{s:"2026-10-26",e:"2026-10-30",k:"an"}]},
+      {n:"F · Audio high-end", o:"SF", bars:[{s:"2026-10-27",e:"2026-10-29",k:"kf",o:"F"},{s:"2026-11-02",e:"2026-11-06",k:"an"}]}
+    ]},
+    {sec:"Arranque", items:[
+      {n:"Briefs y marcas de fantasía", o:"S", bars:[{s:"2026-09-25",e:"2026-10-23",k:"par"}],
+       d:"Un paso antes que Federico: para cada proyecto, nombre de marca inventado, brief de media página y logo, listo para el brief del lunes. Vinos para el lunes 28, Deportes para el 5/10 y así. Federico aprueba."},
+      {n:"Nombre, dominio y redes", o:"S", bars:[{s:"2026-09-28",e:"2026-09-30"}],
+       d:"Chequear TRUCCO en INPI, comprar el dominio, armar las casillas @trucco y reservar @trucco en Instagram, Vimeo, LinkedIn y Behance. Registrar la marca."},
+      {n:"Herramientas y carpeta compartida", o:"S", bars:[{s:"2026-09-29",e:"2026-10-01"}],
+       d:"La animación del videoclip hace de prueba: con ella se define la herramienta de video y el proceso. Suscripciones de imagen y video que vamos a usar, cuánto cuestan por mes y a nombre de quién. Un Drive con una carpeta por proyecto (brief, keyframes, animación, finales) para que Federico encuentre todo."}
+    ]},
+    {sec:"Imagen TRUCCO", items:[
+      {n:"Moodboard de marca", o:"F", bars:[{s:"2026-10-05",e:"2026-10-30",k:"par"}],
+       d:"Referencias sueltas mientras se cierran los keyframes, para llegar al logo con dirección."},
+      {n:"Logo", o:"F", bars:[{s:"2026-11-03",e:"2026-11-05"}]},
+      {n:"Sistema de marca", o:"F", bars:[{s:"2026-11-10",e:"2026-11-12"}],
+       d:"Tipografía, color y grilla. Con esto se arman el site, el reel y todo lo demás."},
+      {n:"Aplicaciones", o:"S", bars:[{s:"2026-11-13",e:"2026-11-18"}],
+       d:"Firma de mail, avatares y banners de redes, template de deck y de presupuesto."}
+    ]},
+    {sec:"Reel", items:[
+      {n:"Reel", o:"F", bars:[{s:"2026-11-16",e:"2026-11-20"}],
+       d:"Picado de los 6 proyectos más algún plano extra, cierre con el logo frame by frame con punch. Sacar una versión vertical para redes. Santiago busca la música antes."},
+      {n:"Música del reel", o:"S", bars:[{s:"2026-11-02",e:"2026-11-13",k:"par"}],
+       d:"Buscar y licenciar el tema del reel antes de que Federico empiece a picar, así corta sobre la música."}
+    ]},
+    {sec:"Site", items:[
+      {n:"Site", o:"SF", bars:[{s:"2026-10-27",e:"2026-11-20",k:"par"}],
+       d:"Santiago lo arma con Claude: primero la estructura, después aplica el sistema de marca (12/11), y va cargando cada proyecto a medida que se termina. Federico ajusta el diseño. Home con el reel, una ficha por proyecto, páginas de cada uno con links a sus perfiles y Calendly. Sale con el reel."},
+      {n:"Textos: about, bios y fichas", o:"S", bars:[{s:"2026-10-19",e:"2026-10-23"}],
+       d:"Qué es TRUCCO en tres líneas, bio de cada uno y un párrafo por proyecto (marca, idea, qué hicimos). Sirven para el site, los mails y las redes."},
+      {n:"Perfiles personales al día", o:"S", bars:[{s:"2026-11-16",e:"2026-11-18"}],
+       d:"LinkedIn, Instagram y Vimeo de Santiago y Federico con TRUCCO en la bio y link al site."}
+    ]},
+    {sec:"Venta y reach out", items:[
+      {n:"Planilla y mails", o:"S", bars:[{s:"2026-10-05",e:"2026-10-09",k:"par"}],
+       d:"Ordenar la planilla por tipo (agencias, productoras, marcas, artistas) y escribir un mail para cada tipo. Sumar contactos nuevos de los rubros de los proyectos: bodegas, marcas deportivas, estudios de arquitectura, marcas de audio."},
+      {n:"Tarifario, contrato y cobros", o:"S", bars:[{s:"2026-10-13",e:"2026-10-16",k:"par"}],
+       d:"Cuánto cobramos por keyframes, por animación y por pieza completa. Un contrato modelo simple (alcance, revisiones, pagos, derechos de uso) y cómo facturamos y cobramos, también desde el exterior."},
+      {n:"Credentials en PDF", o:"S", bars:[{s:"2026-11-18",e:"2026-11-20"}],
+       d:"Una o dos páginas con el sistema de marca: quiénes somos, qué hacemos, stills de los proyectos y link al reel. Va adjunto en los mails."},
+      {n:"Redes: mostrar el proceso", o:"S", bars:[{s:"2026-10-19",e:"2026-11-20",k:"par"}],
+       d:"Con @trucco ya reservado, publicar stills y keyframes de los proyectos terminados, uno o dos por semana. Cuando salgan los mails la cuenta no está vacía."},
+      {n:"Envíos y llamadas", o:"SF", bars:[{s:"2026-11-23",e:"2026-12-04"}],
+       d:"Santiago manda los mails por tandas y hace el follow-up a los 7 días; las llamadas se agendan por Calendly y las toman los dos."},
+      {n:"Plataformas y medios", o:"S", bars:[{s:"2026-11-23",e:"2026-12-04",k:"par"}],
+       d:"Subir los proyectos a Behance y Vimeo y mandarlos a blogs y newsletters de motion y dirección de arte. Es visibilidad gratis mientras corren los mails."}
+    ]}
+  ];
+  var KEY = [
+    {t:"Keyframes listos", s:"2026-10-29"},
+    {t:"Animaciones listas", s:"2026-11-06"},
+    {t:"Imagen TRUCCO", s:"2026-11-12"},
+    {t:"Reel y site", s:"2026-11-19"},
+    {t:"Primeros mails", s:"2026-11-23"}
+  ];
+  // Eventos. k: "reu" reunión (con hora), "ini" inicio, "hito" fecha clave.
+  var EVENTS = [
+    {d:"2026-09-29", t:"Brief KF Vinos · arranca animación Videoclip", x:"Brief de keyframes de Vinos. Arranca la animación del Videoclip."},
+    {d:"2026-10-01", t:"Review KF Vinos · review animación Videoclip", x:"Review de keyframes de Vinos y de la animación del Videoclip."},
+    {d:"2026-10-05", t:"Brief KF Deportes · arranca animación Vinos", x:"Brief de keyframes de Deportes. Arranca la animación de Vinos."},
+    {d:"2026-10-08", t:"Review KF Deportes · review animación Vinos", x:"Review de keyframes de Deportes y de la animación de Vinos."},
+    {d:"2026-10-12", t:"Brief KF Fashion Week · arranca animación Deportes", x:"Es feriado. Brief de keyframes de Fashion Week. Arranca la animación de Deportes."},
+    {d:"2026-10-15", t:"Review KF Fashion Week · review animación Deportes", x:"Review de keyframes de Fashion Week y de la animación de Deportes."},
+    {d:"2026-10-19", t:"Brief KF Arquitectura · arranca animación Fashion Week", x:"Brief de keyframes de Arquitectura. Arranca la animación de Fashion Week."},
+    {d:"2026-10-22", t:"Review KF Arquitectura · review animación Fashion Week", x:"Review de keyframes de Arquitectura y de la animación de Fashion Week."},
+    {d:"2026-10-26", t:"Brief KF Audio · arranca animación Arquitectura", x:"Brief de keyframes de Audio high-end. Arranca la animación de Arquitectura."},
+    {d:"2026-10-29", t:"Review KF Audio · review animación Arquitectura", x:"Review de keyframes de Audio high-end (quedan los 6) y de la animación de Arquitectura."},
+    {d:"2026-11-02", t:"Brief logo · arranca animación Audio", x:"Brief del logo TRUCCO. Arranca la animación de Audio high-end."},
+    {d:"2026-11-05", t:"Review logo · review animación Audio", x:"Review de las opciones de logo y de la animación de Audio high-end (quedan las 6)."},
+    {d:"2026-11-09", t:"Arranca sistema de marca", x:"Tipografía, color y grilla sobre el logo elegido."},
+    {d:"2026-11-12", t:"Review sistema de marca", x:"Aprobar la imagen TRUCCO."},
+    {d:"2026-11-16", t:"Arranca reel", x:"Picado del reel sobre la música elegida."},
+    {d:"2026-11-19", t:"Review reel y site", x:"Aprobar el reel y el site para salir."},
+    {d:"2026-11-23", t:"Arrancan los mails", x:"Primera tanda de envíos."}
+  ];
+  var DOW = ["dom","lun","mar","mié","jue","vie","sáb"];
+  function gcal(ev){
+    var d=ev.d.replace(/-/g,""), dates;
+    ev.h = ev.h || "18:30";
+    if(ev.h){
+      var hh=+ev.h.slice(0,2), mm=ev.h.slice(3,5);
+      var p2=function(n){return (n<10?"0":"")+n;};
+      dates=d+"T"+p2(hh)+mm+"00/"+d+"T"+p2(hh+1)+mm+"00";
+    } else {
+      dates=d+"/"+iso(ymd(ev.d)+DAY).replace(/-/g,"");
+    }
+    return "https://calendar.google.com/calendar/render?action=TEMPLATE"+
+      "&text="+encodeURIComponent("TRUCCO · "+ev.t)+
+      "&dates="+dates+"&ctz=America/Argentina/Buenos_Aires"+
+      "&details="+encodeURIComponent(ev.x||"")+
+      "&add="+encodeURIComponent("carlinifederico@gmail.com");
+  }
+  function tile(ev, style){
+    var num = style ? '' : new Date(ymd(ev.d)).getUTCDate();
+    ev.h = ev.h || "18:30"; ev.k = "reu";
+    var tip=ev.t+" · "+fmt(ymd(ev.d))+(ev.h?" · "+ev.h:"")+" · Agregar a Google Calendar";
+    return '<a class="ev '+ev.k+'"'+(style?' style="'+style+'"':'')+' href="'+esc(gcal(ev))+'" target="_blank" rel="noopener" title="'+esc(tip)+'" aria-label="'+esc(tip)+'"><i></i><b>'+num+'</b></a>';
+  }
+  var HOLIDAYS = {"2026-10-12":"Feriado"};
+  var MES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  var DL = ["D","L","M","M","J","V","S"];
+  var DAY = 864e5;
+  var WHO = {S:"Santiago", F:"Federico", SF:"Los dos"};
+  var KIND = {kf:"Keyframes", an:"Animación"};
+
+  function ymd(s){var p=s.split("-").map(Number); return Date.UTC(p[0],p[1]-1,p[2]);}
+  function iso(t){return new Date(t).toISOString().slice(0,10);}
+  function fmt(t){var d=new Date(t); return d.getUTCDate()+" "+MES[d.getUTCMonth()];}
+  function range(a,b){
+    if(a===b) return fmt(a);
+    var da=new Date(a), db=new Date(b);
+    return da.getUTCMonth()===db.getUTCMonth() ? da.getUTCDate()+"–"+fmt(b) : fmt(a)+" – "+fmt(b);
+  }
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+
+  var START = ymd("2026-09-21"), END = ymd("2026-12-13");
+  var days = [], idx = {};
+  for(var t=START; t<=END; t+=DAY){
+    var wd=new Date(t).getUTCDay();
+    idx[iso(t)]=days.length; days.push(t);
+  }
+  var N = days.length;
+  var now = new Date();
+  var todayT = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  var todayIdx = idx[iso(todayT)];
+
+  var g = document.getElementById("gantt");
+  g.style.setProperty("--n", N);
+  function x(i){return "calc(var(--cw) * "+i+")";}
+
+  var h = '<div class="row head"><div class="lab">Tarea</div><div class="trk">';
+  var MESL = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  for(var i=0;i<N;i++){
+    var d=new Date(days[i]), wd=d.getUTCDay();
+    if(i===0 || d.getUTCDate()===1) h += '<div class="mo" style="left:'+x(i)+'">'+MESL[d.getUTCMonth()]+'</div>';
+    h += '<div class="dy'+(wd===0||wd===6?' we':'')+(i===todayIdx?' today':'')+'" style="left:'+x(i)+'">'+DL[wd]+'<br>'+d.getUTCDate()+'</div>';
+  }
+  h += '</div></div>';
+
+  var EVROWS = [
+    {n:"Reuniones · lun y jue 18:30", f:function(){return true;}}
+  ];
+  h += '<div class="row sec" data-sec="ag"><div class="lab">Agenda</div><div class="trk"></div></div>';
+  EVROWS.forEach(function(r){
+    h += '<div class="row" data-o="SF" data-sec-of="ag"><div class="lab"><span class="nm">'+r.n+'</span><span class="own SF">S+F</span></div><div class="trk">';
+    EVENTS.filter(r.f).forEach(function(ev){
+      var i=idx[ev.d]; if(i===undefined) return;
+      h += tile(ev, "left:calc("+x(i)+" + (var(--cw) - 20px) / 2)");
+    });
+    h += '</div></div>';
+  });
+
+  DATA.forEach(function(sec, si){
+    h += '<div class="row sec" data-sec="'+si+'"><div class="lab">'+esc(sec.sec)+'</div><div class="trk"></div></div>';
+    sec.items.forEach(function(it){
+      var tip = it.n+" · "+WHO[it.o]+" · "+it.bars.map(function(b){return (KIND[b.k]?KIND[b.k]+" ("+WHO[b.o||it.o]+") ":"")+range(ymd(b.s),ymd(b.e));}).join(" / ");
+      h += '<div class="row" data-o="'+it.o+'" data-sec-of="'+si+'" title="'+esc(tip)+'">';
+      h += '<div class="lab"><span class="nm">'+esc(it.n)+'</span><span class="own '+it.o+'">'+(it.o==="SF"?"S+F":it.o)+'</span></div><div class="trk">';
+      it.bars.forEach(function(b){
+        var a=idx[b.s], z=idx[b.e], len=z-a+1;
+        var cls="b "+(b.o||it.o)+(b.k==="kf"?" kf":"")+(b.k==="par"?" par":"")+(b.done?" done":"");
+        h += '<div class="'+cls+'" style="left:calc('+x(a)+' + 2px);width:calc('+x(len)+' - 4px)"></div>';
+      });
+      h += '</div></div>';
+    });
+  });
+  Object.keys(HOLIDAYS).forEach(function(k){
+    if(idx[k]===undefined) return;
+    h += '<div class="ov hol" style="left:calc(var(--lw) + '+x(idx[k])+');width:var(--cw)" aria-hidden="true"></div>';
+  });
+  days.forEach(function(t,i){
+    var wd=new Date(t).getUTCDay();
+    if(wd===0||wd===6) h += '<div class="ov we" style="left:calc(var(--lw) + '+x(i)+');width:var(--cw)" aria-hidden="true"></div>';
+  });
+  if(todayIdx!==undefined){
+    h += '<div class="ov now" style="left:calc(var(--lw) + '+x(todayIdx)+' + var(--cw) / 2 - 1px)" aria-hidden="true"></div>';
+  }
+  g.innerHTML = h;
+
+  document.getElementById("milestones").innerHTML = KEY.map(function(m){
+    return '<div><span class="d">'+fmt(ymd(m.s))+'</span><span class="t">'+esc(m.t)+'</span></div>';
+  }).join("");
+
+  document.getElementById("agenda").innerHTML = EVENTS.map(function(ev){
+    var t=ymd(ev.d), past=t<todayT;
+    return '<div class="ag'+(past?' past':'')+'">'+tile(ev)+
+      '<span class="when">'+DOW[new Date(t).getUTCDay()]+' '+fmt(t)+(ev.h?' · '+ev.h:'')+'</span>'+
+      '<span class="what"><b>'+esc(ev.t)+'</b><span>'+esc(ev.x||"")+'</span></span>'+
+      '<a class="add" href="'+esc(gcal(ev))+'" target="_blank" rel="noopener">+ Google Calendar</a></div>';
+  }).join("");
+
+  // qué es cada cosa
+  var det = "";
+  DATA.forEach(function(sec){
+    var rows = sec.items.filter(function(it){return it.d;});
+    if(!rows.length) return;
+    det += '<dl>'+rows.map(function(it){return '<dt>'+esc(it.n)+'</dt><dd>'+esc(it.d)+'</dd>';}).join("")+'</dl>';
+  });
+  det = '<dl><dt>Proyectos</dt><dd>Un proyecto por semana. El lunes a las 18:30 se hace el brief de keyframes del proyecto nuevo y arranca la animación del anterior. Keyframes de martes a jueves (Federico), animación de lunes a viernes (Santiago genera, Federico dirige). El jueves a las 18:30 se revisan los dos. Todo material nuevo, nada hecho para otras empresas.</dd></dl>' + det;
+  document.getElementById("detail").innerHTML = det;
+
+  // filtro
+  var btns = document.querySelectorAll(".seg button");
+  function apply(f){
+    btns.forEach(function(b){b.setAttribute("aria-pressed", String(b.dataset.f===f));});
+    var vis = {};
+    g.querySelectorAll(".row[data-o]").forEach(function(r){
+      var show = f==="all" || r.dataset.o.indexOf(f)>-1;
+      r.hidden = !show;
+      if(show) vis[r.dataset.secOf]=true;
+    });
+    g.querySelectorAll(".row.sec").forEach(function(r){ r.hidden = !vis[r.dataset.sec]; });
+    try{ localStorage.setItem("trucco-filtro", f); }catch(e){}
+  }
+  btns.forEach(function(b){ b.addEventListener("click", function(){ apply(b.dataset.f); }); });
+  var saved = "all";
+  try{ saved = localStorage.getItem("trucco-filtro") || "all"; }catch(e){}
+  apply(saved);
+
+  // que el calendario ocupe todo el ancho: estira los días si sobra lugar
+  function fit(){
+    var base = window.matchMedia("(max-width:640px)").matches ? 22 : 32;
+    var lw = parseFloat(getComputedStyle(g).getPropertyValue("--lw")) || 250;
+    var avail = document.getElementById("scroll").clientWidth - lw - 2;
+    g.style.setProperty("--cw", Math.max(base, avail / N) + "px");
+  }
+  fit();
+  window.addEventListener("resize", fit);
+
+  var sc = document.getElementById("scroll");
+  if(todayIdx!==undefined){
+    var cwpx = parseFloat(getComputedStyle(g).getPropertyValue("--cw"))||32;
+    sc.scrollLeft = Math.max(0, (Math.floor(todayIdx/7)*7 - 7) * cwpx);
+  }
+
+  // lo que viene: esta semana y la próxima, Federico primero
+  var ref = todayT < START ? START : todayT;
+  var rd = new Date(ref).getUTCDay();
+  if(rd===6) ref += 2*DAY; else if(rd===0) ref += DAY;
+  var mon = ref - (new Date(ref).getUTCDay()-1)*DAY;
+  var weeks = [
+    {label:"Esta semana · "+range(mon, mon+4*DAY), a:mon, b:mon+4*DAY},
+    {label:"La que viene · "+range(mon+7*DAY, mon+11*DAY), a:mon+7*DAY, b:mon+11*DAY}
+  ];
+  function card(p){
+    var html = '<div class="card"><h3><i class="sw '+p+'"></i>'+WHO[p]+'</h3>';
+    weeks.forEach(function(wk){
+      var list = [];
+      DATA.forEach(function(sec){ sec.items.forEach(function(it){
+        it.bars.forEach(function(b){
+          if((b.o||it.o).indexOf(p)<0) return;
+          var s=ymd(b.s), e=ymd(b.e);
+          if(s<=wk.b && e>=wk.a) list.push({n:it.n+(KIND[b.k]?" · "+KIND[b.k].toLowerCase():""), s:s, e:e, done:b.done, par:b.k==="par"});
+        });
+      });});
+      EVENTS.forEach(function(ev){
+        var t=ymd(ev.d);
+        if(t>=wk.a && t<=wk.b) list.push({n:ev.t+(ev.h?" · "+ev.h:""), s:t, e:t, ev:ev});
+      });
+      list.sort(function(a,b){return a.s-b.s;});
+      html += '<div class="grp"><h4>'+wk.label+'</h4><ul>';
+      if(!list.length) html += '<li class="empty">Nada asignado</li>';
+      list.forEach(function(it){
+        html += '<li><span class="dt">'+range(it.s,it.e)+'</span>'+(it.ev?tile(it.ev):'')+'<span>'+esc(it.n)+(it.par?' <span class="eyebrow">en paralelo</span>':'')+(it.done?' <span class="eyebrow">hecho</span>':'')+'</span></li>';
+      });
+      html += '</ul></div>';
+    });
+    return html + '</div>';
+  }
+  document.getElementById("weeks").innerHTML = card("F") + card("S");
+})();
+</script>
