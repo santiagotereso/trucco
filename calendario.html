@@ -191,7 +191,7 @@ summary:focus-visible{outline:2px solid var(--s); outline-offset:2px}
 
   <section>
     <h2>Agenda</h2>
-    <p class="hint">Lunes y jueves a las 18:30. Lunes: brief de keyframes y arranque de animación. Jueves: review de los dos. Cada una se agrega a Google Calendar con Federico ya como invitado: al guardar, Google ofrece mandarle la invitación.</p>
+    <p class="hint">Lunes y jueves a las 18:00. Lunes: brief de keyframes y arranque de animación. Jueves: review de los dos. Cada una se agrega a Google Calendar con Federico ya como invitado: al guardar, Google ofrece mandarle la invitación.</p>
     <div class="agenda" id="agenda"></div>
   </section>
 
@@ -289,7 +289,7 @@ summary:focus-visible{outline:2px solid var(--s); outline-offset:2px}
   var DOW = ["dom","lun","mar","mié","jue","vie","sáb"];
   function gcal(ev){
     var d=ev.d.replace(/-/g,""), dates;
-    ev.h = ev.h || "18:30";
+    ev.h = ev.h || "18:00";
     if(ev.h){
       var hh=+ev.h.slice(0,2), mm=ev.h.slice(3,5);
       var p2=function(n){return (n<10?"0":"")+n;};
@@ -305,7 +305,7 @@ summary:focus-visible{outline:2px solid var(--s); outline-offset:2px}
   }
   function tile(ev, style){
     var num = style ? '' : new Date(ymd(ev.d)).getUTCDate();
-    ev.h = ev.h || "18:30"; ev.k = "reu";
+    ev.h = ev.h || "18:00"; ev.k = "reu";
     var tip=ev.t+" · "+fmt(ymd(ev.d))+(ev.h?" · "+ev.h:"")+" · Agregar a Google Calendar";
     return '<a class="ev '+ev.k+'"'+(style?' style="'+style+'"':'')+' href="'+esc(gcal(ev))+'" target="_blank" rel="noopener" title="'+esc(tip)+'" aria-label="'+esc(tip)+'"><i></i><b>'+num+'</b></a>';
   }
@@ -351,7 +351,7 @@ summary:focus-visible{outline:2px solid var(--s); outline-offset:2px}
   h += '</div></div>';
 
   var EVROWS = [
-    {n:"Reuniones · lun y jue 18:30", f:function(){return true;}}
+    {n:"Reuniones · lun y jue 18:00", f:function(){return true;}}
   ];
   h += '<div class="row sec" data-sec="ag"><div class="lab">Agenda</div><div class="trk"></div></div>';
   EVROWS.forEach(function(r){
@@ -409,7 +409,7 @@ summary:focus-visible{outline:2px solid var(--s); outline-offset:2px}
     if(!rows.length) return;
     det += '<dl>'+rows.map(function(it){return '<dt>'+esc(it.n)+'</dt><dd>'+esc(it.d)+'</dd>';}).join("")+'</dl>';
   });
-  det = '<dl><dt>Proyectos</dt><dd>Un proyecto por semana. El lunes a las 18:30 se hace el brief de keyframes del proyecto nuevo y arranca la animación del anterior. Keyframes de martes a jueves (Federico), animación de lunes a viernes (Santiago genera, Federico dirige). El jueves a las 18:30 se revisan los dos. Todo material nuevo, nada hecho para otras empresas.</dd></dl>' + det;
+  det = '<dl><dt>Proyectos</dt><dd>Un proyecto por semana. El lunes a las 18:00 se hace el brief de keyframes del proyecto nuevo y arranca la animación del anterior. Keyframes de martes a jueves (Federico), animación de lunes a viernes (Santiago genera, Federico dirige). El jueves a las 18:00 se revisan los dos. Todo material nuevo, nada hecho para otras empresas.</dd></dl>' + det;
   document.getElementById("detail").innerHTML = det;
 
   // filtro
